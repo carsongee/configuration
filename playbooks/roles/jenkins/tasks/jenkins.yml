@@ -2,16 +2,8 @@
 - name: jenkins | Add the jenkins user to the edx group
   user: name=jenkins append=yes groups="edx"
 
-- name: jenkins | install jenkins specific system packages
+- name: jenkins | Install jenkins specific system packages
   apt: pkg={{','.join(jenkins_debian_pkgs)}} state=present
-
-- name: jenkins | Install gcli
-  sudo_user: jenkins
-  shell: /home/jenkins/.rbenv/bin/rbenv exec gem install github_cli
-
-# This is done so that it will not report back to github while testing
-- name: jenkins | TEMPORARILY DISABLE gcli
-  shell: echo "#!/bin/bash\necho gcli" > /usr/local/bin/gcli
 
 - name: jenkins | Install Jenkins
   shell: wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
@@ -22,7 +14,7 @@
 - name: jenkins | Install Jenkins 3
   shell: apt-get update
 
-- name: jenkins | install jenkins 4
+- name: jenkins | Install jenkins 4
   apt: pkg=jenkins state=present
 
 - name: jenkins | Make plugins directory
@@ -54,12 +46,16 @@
   notify:
     - restart Jenkins
 
-- name: jenkins | install ssh key for private git repos
+- name: jenkins | Create ssh key directory
+  sudo_user: jenkins
+  file: dest="{{ jenkins_user_home }}/.ssh" state="directory"
+
+- name: jenkins | Install ssh key
   copy: >
-    src="{{jenkins_git_identity_path}}"
-    dest="{{jenkins_user_home}}/.ssh/id_rsa"
+    src="{{ jenkins_git_ssh_key }}"
+    dest="{{ jenkins_user_home }}/.ssh/id_rsa"
     force=yes
-    owner="{{jenkins_user}}"
-    group="{{jenkins_user}}"
+    owner="{{ jenkins_user }}"
+    group="edx"
     mode=600
-  when: c_install_ssh_key is defined
+  when: jenkins_git_ssh_key is defined

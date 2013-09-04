@@ -1,0 +1,29 @@
+---
+- name: gcli | Remove stub
+  file: path="{{ jenkins_user_home }}/.rbenv/shims/gcli" state="absent"
+  when: enable_github_status
+
+- name: gcli | Install gcli (GitHub)
+  sudo_user: jenkins
+  shell: "yes | {{ jenkins_user_home }}/.rbenv/shims/gem install github_cli"
+  when: enable_github_status
+
+- name: gcli | Rehash rbenv
+  sudo_user: jenkins
+  shell: "{{ jenkins_user_home }}/.rbenv/bin/rbenv rehash"
+  when: enable_github_status
+
+- name: gcli | Create gcli (GitHub) config file
+  sudo_user: jenkins
+  command: "{{ jenkins_user_home }}/.rbenv/shims/gcli init --force"
+  when: enable_github_status
+
+- name: gcli | Configure gcli (GitHub) auth token
+  sudo_user: jenkins
+  command: "{{ jenkins_user_home }}/.rbenv/shims/gcli config user.token {{ github_oauth_token }}"
+  when: github_oauth_token is defined
+
+# This is done so that it will not report back to github while testing
+- name: gcli | Stub gcli
+  shell: echo "#!/bin/bash\necho == GitHub reporting disabled ==" > {{ jenkins_user_home }}/.rbenv/shims/gcli
+  when: not enable_github_status

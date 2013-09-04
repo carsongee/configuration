@@ -5,7 +5,7 @@ jenkins_phantomjs_archive: phantomjs-1.9.1-linux-x86_64.tar.bz2
 jenkins_phantomjs_folder: phantomjs-1.9.1-linux-x86_64
 jenkins_user: "jenkins"
 jenkins_user_home: /home/jenkins
-jenkins_ruby_version: "1.9.3-p448"
+jenkins_ruby_version: "1.9.3-p374"
 jenkins_git_identity_path: "{{secure_dir}}/files/git-identity"
 
 jenkins_debian_pkgs:
@@ -27,7 +27,6 @@ jenkins_debian_pkgs:
     - rake
 jenkins_plugins:
     - ant.hpi
-    - backup.hpi
     - build-name-setter.hpi
     - build-timeout.hpi
     - cobertura.hpi
@@ -35,7 +34,6 @@ jenkins_plugins:
     - cvs.hpi
     - dashboard-view.hpi
     - external-monitor-job.hpi
-    - ghprb.hpi
     - git.hpi
     - github.hpi
     - git-client.hpi
@@ -56,14 +54,20 @@ jenkins_plugins:
     - postbuild-task.hpi
     - rbenv.hpi
     - ruby-runtime.hpi
+    - scm-sync-configuration.hpi
     - shiningpanda.hpi
     - ssh-credentials.hpi
     - ssh-slaves.hpi
     - subversion.hpi
-    - thinBackup.hpi
     - tmpcleaner.hpi
     - token-macro.hpi
     - translation.hpi
     - violations.hpi
     - multiple-scms.hpi
     - timestamper.hpi
+
+# Ruby Specific Vars
+ruby_base: "{{ jenkins_user_home }}"
+rbenv_root: "{{ ruby_base }}/.rbenv"
+ruby_version: "{{ jenkins_ruby_version }}"
+gem_home: "{{ ruby_base }}/.gem"

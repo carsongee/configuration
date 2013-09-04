@@ -1,7 +1,26 @@
+# Configure a Jenkins instance
+#
+# To allow Jenkins to communicate with GitHub, you'll need to
+# provide:
+#
+# 1) A private SSH key, to allow Jenkins to push configuration changes
+#    to a private repo.  See https://help.github.com/articles/generating-ssh-keys.
+#    The public key gets installed through the GitHub interface, and the
+#    private key gets loaded from {{ secure_dir }}/files/jenkins_key
+#
+# 2) An OAuth token, to allow Jenkins to update the status on the build.
+#    Set the var "github_oauth_token" to the value of the token.
+#
+# To disable posting build status (useful for testing), set
+# the var `enable_github_status` to false.
+
 - name: Configure instance(s)
   hosts: jenkins
   sudo: True
   gather_facts: True
+  vars:
+    - enable_github_status: true
+    - jenkins_git_ssh_key: "{{ secure_dir }}/files/jenkins_key"
   roles:
     - common
     - edxlocal
