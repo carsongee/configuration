@@ -1,0 +1,93 @@
+development:
+  sessions:
+    default:
+      database: cs_comments_service_development
+      hosts:
+        - localhost:27017
+test:
+  sessions:
+    default:
+      database: cs_comments_service_test
+      hosts:
+        - localhost:27017
+
+#production:
+#  sessions:
+#    default:
+#      uri: <%= ENV['MONGOHQ_URL'] %>
+
+production:
+  sessions:
+    default:
+      hosts:
+        - hurley.member0.mongohq.com:10000
+        - hurley.member1.mongohq.com:10000
+      username: <%= ENV['MONGOHQ_USER'] %>
+      password: <%= ENV['MONGOHQ_PASS'] %>
+      database: app6929933
+      options:
+        skip_version_check: true
+        safe: true
+        consistency: strong
+
+mitxstage:
+  sessions:
+    default:
+      hosts:
+        - 172.23.128.10:27017
+      username: <%= ENV['MONGOHQ_USER'] %>
+      password: <%= ENV['MONGOHQ_PASS'] %>
+      database: cs_comments_service
+      options:
+        skip_version_check: true
+        safe: true
+        consistency: strong
+
+edgeprod:
+  sessions:
+    default:
+      hosts:
+        - sayid.member1.mongohq.com:10001
+      username: <%= ENV['MONGOHQ_USER'] %>
+      password: <%= ENV['MONGOHQ_PASS'] %>
+      database: app10640640
+      options:
+        skip_version_check: true
+        safe: true
+        consistency: strong
+
+edgestage:
+  sessions:
+    default:
+      hosts:
+        - vincent.mongohq.com:10001
+      username: <%= ENV['MONGOHQ_USER'] %>
+      password: <%= ENV['MONGOHQ_PASS'] %>
+      database: app10640673
+      options:
+        skip_version_check: true
+        safe: true
+        consistency: strong
+
+staging:
+  sessions:
+    default:
+      uri: <%= ENV['MONGOHQ_URL'] %>
+
+loadtest:
+  sessions:
+    default:
+      hosts:
+        - sayid.member0.mongohq.com:10002
+        - sayid.member1.mongohq.com:10002
+      username: <%= ENV['MONGOHQ_USER'] %>
+      password: <%= ENV['MONGOHQ_PASS'] %>
+      database: app16669863
+      options:
+        skip_version_check: true
+        safe: true
+        consistency: strong
+
+defaults: &defaults
+  use_utc: false
+  use_activesupport_time_zone: true

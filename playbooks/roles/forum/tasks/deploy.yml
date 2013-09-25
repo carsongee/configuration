@@ -15,6 +15,13 @@
   - forum
   - deploy
 
+- name: forum | ***HACK copy over mongoid configuration***
+  copy: src=mongoid.yml dest={{ forum_code_dir }}/config/mongoid.yml owner={{ forum_user }} group={{ forum_user }}
+  when: forum_hack is defined
+  tags:
+    - forum
+    - deploy
+
 - name: forum | install comments service bundle
   shell: executable=/bin/bash {{ forum_home }}/.rbenv/shims/bundle install chdir={{ forum_code_dir }}
   sudo: yes
