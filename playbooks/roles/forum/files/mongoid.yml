@@ -35,6 +35,19 @@ mitxstage:
     default:
       hosts:
         - 172.23.128.10:27017
+        - 172.23.129.10:27017
+      username: <%= ENV['MONGOHQ_USER'] %>
+      password: <%= ENV['MONGOHQ_PASS'] %>
+      database: cs_comments_service
+      options:
+        skip_version_check: true
+        safe: true
+        consistency: strong
+mitxedx:
+  sessions:
+    default:
+      hosts:
+        - 172.25.128.10:27017
       username: <%= ENV['MONGOHQ_USER'] %>
       password: <%= ENV['MONGOHQ_PASS'] %>
       database: cs_comments_service
